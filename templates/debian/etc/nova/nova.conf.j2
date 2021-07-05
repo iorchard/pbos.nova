@@ -1,0 +1,122 @@
+[DEFAULT]
+my_ip = {{ ansible_host }}
+transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_port }}/
+pybasedir = /usr/lib/python3/dist-packages
+state_path = /var/lib/nova
+[api]
+auth_strategy = keystone
+[api_database]
+{% if inventory_hostname in groups['controller'] %}
+connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}_api
+{% endif %}
+[barbican]
+[cache]
+[cinder]
+os_region_name = regionOne
+[compute]
+[conductor]
+workers = 2
+[console]
+[consoleauth]
+[cors]
+[cyborg]
+[database]
+{% if inventory_hostname in groups['controller'] %}
+connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}
+{% endif %}
+[devices]
+[ephemeral_storage_encryption]
+[filter_scheduler]
+[glance]
+api_servers = http://{{ keepalived_vip }}:{{ glance_port }}
+[guestfs]
+[healthcheck]
+[hyperv]
+[image_cache]
+[ironic]
+[key_manager]
+[keystone]
+[keystone_authtoken]
+www_authenticate_uri = http://{{ keepalived_vip }}:{{ keystone_port }}
+auth_url = http://{{ keepalived_vip }}:{{ keystone_port }}
+memcached_servers = {{ keepalived_vip }}:{{ memcached_port }}
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = nova
+password = {{ os_password }}
+[libvirt]
+disk_cachemodes = network=writeback
+images_type = rbd
+hw_disk_discard = unmap
+images_rbd_ceph_conf = /etc/ceph/ceph.conf
+images_rbd_pool = vms
+rbd_user = cinder
+rbd_secret_uuid = {{ rbd_secret }}
+[metrics]
+[mks]
+[neutron]
+auth_url = http://{{ keepalived_vip }}:{{ keystone_port }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = {{ neutron_password }}
+{% if inventory_hostname in groups['controller'] %}
+default_floating_pool = ext-net
+service_metadata_proxy = true
+metadata_proxy_shared_secret = {{ metadata_secret }}
+service_name = neutron
+{% endif %}
+[notifications]
+[oslo_concurrency]
+lock_path = /var/lock/nova
+[oslo_messaging_amqp]
+[oslo_messaging_kafka]
+[oslo_messaging_notifications]
+[oslo_messaging_rabbit]
+[oslo_middleware]
+[oslo_policy]
+policy_dirs = /etc/nova/policy.d
+[pci]
+[placement]
+region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://{{ keepalived_vip }}:{{ keystone_port }}/v3
+username = placement
+password = {{ placement_password }}
+[powervm]
+[privsep]
+[profiler]
+[quota]
+[rdp]
+[remote_debug]
+[scheduler]
+workers = 2
+discover_hosts_in_cells_interval = 60
+[serial_console]
+[service_user]
+[spice]
+enabled = true
+server_listen = 0.0.0.0
+server_proxyclient_address = $my_ip
+[upgrade_levels]
+[vault]
+[vendordata_dynamic_auth]
+[vmware]
+[vnc]
+enabled = true
+server_listen = {{ (inventory_hostname in groups['controller']) | ternary(ansible_host, '0.0.0.0') }}
+server_proxyclient_address = {{ ansible_host }}
+{% if inventory_hostname in groups['compute'] %}
+novncproxy_base_url = http://{{ keepalived_vip }}:{{ nova_novncproxy_port }}/vnc_auto.html
+{% endif %}
+[workarounds]
+[wsgi]
+[zvm]

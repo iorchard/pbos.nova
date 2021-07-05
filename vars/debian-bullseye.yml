@@ -1,0 +1,56 @@
+---
+prereq_pkgs:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+
+# osbpo apt repo keyring
+osbpo_keyring:
+  url: "http://osbpo.debian.net/osbpo/dists/pubkey.gpg"
+  file: "/usr/share/keyrings/osbpo-keyring.gpg"
+
+# osbpo apt repo
+osbpo_repos:
+  - repo: "deb [signed-by=/usr/share/keyrings/osbpo-keyring.gpg] http://osbpo.debian.net/osbpo bullseye-{{ openstack_release }}-backports main"
+    filename: "openstack"
+  - repo: "deb [signed-by=/usr/share/keyrings/osbpo-keyring.gpg] http://osbpo.debian.net/osbpo bullseye-{{ openstack_release }}-backports-nochange main"
+    filename: "openstack"
+
+controller_packages:
+  - nova-api
+  - nova-conductor
+  - nova-novncproxy
+  - nova-scheduler
+
+compute_packages:
+  - nova-compute-kvm
+
+nova_db:
+  - nova_api
+  - nova
+  - nova_cell0
+
+os_service_init:
+  - {dest: "/etc/init.d/nova-api"}
+  - {dest: "/etc/init.d/nova-api-metadata"}
+
+os_service_conf: 
+  - {dest: "/etc/nova/nova.conf"}
+  - {dest: "/etc/nova/nova-api-uwsgi.ini"}
+  - {dest: "/etc/nova/nova-api-uwsgi-bind.ini"}
+  - {dest: "/etc/nova/nova-api-metadata-uwsgi.ini"}
+  - {dest: "/etc/nova/nova-api-metadata-uwsgi-bind.ini"}
+
+os_service_compute_conf: 
+  - {dest: "/etc/nova/nova.conf"}
+
+os_systemd_service_name:
+  - nova-api
+  - nova-api-metadata
+  - nova-scheduler
+  - nova-conductor
+  - nova-novncproxy
+
+os_systemd_compute_service_name:
+  - nova-compute
+...

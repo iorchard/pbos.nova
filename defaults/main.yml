@@ -1,0 +1,25 @@
+---
+openstack_release: "wallaby"
+keepalived_vip: ~
+os_service_name: "nova"
+db_password: "{{ nova_password }}"
+os_password: "{{ nova_password }}"
+rabbitmq_openstack_password: ~
+placement_password: ~
+neutron_password: ~
+metadata_secret: ~
+rbd_secret: ~
+nova_port: 8774
+nova_metadata_port: 8775
+nova_novncproxy_port: 6080
+keystone_port: 5000
+glance_port: 9292
+rabbitmq_port: 5672
+memcached_port: 11211
+os_endpoint_interface:
+  - public
+  - internal
+  - admin
+nova_api_processes: 4
+nova_api_metadata_processes: 4
+...

@@ -1,0 +1,53 @@
+---
+- name: Setup | copy init file
+  ansible.builtin.copy:
+    dest: "{{ item.dest }}"
+    src: "{{ ansible_distribution | lower }}{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  loop: "{{ os_service_init }}"
+  become: true
+
+- name: Setup | template configuration
+  ansible.builtin.template:
+    dest: "{{ item.dest }}"
+    src: "{{ ansible_distribution | lower }}{{ item.dest + '.j2' }}"
+    owner: "root"
+    group: "{{ os_service_name }}"
+    mode: "0640"
+    backup: true
+  loop: "{{ os_service_conf }}"
+  become: true
+  changed_when: true
+  notify:
+    - systemctl restart service
+
+- name: Setup | populate nova-api database
+  ansible.builtin.shell: su -s /bin/sh -c "nova-manage api_db sync" nova
+  become: true
+  delegate_to: "{{ groups['controller'][0] }}"
+  run_once: true
+
+- name: Setup | register cell0 database
+  ansible.builtin.shell: su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
+  become: true
+  delegate_to: "{{ groups['controller'][0] }}"
+  run_once: true
+
+- name: Setup | create cell1 cell
+  ansible.builtin.shell: |
+    su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1" nova
+  become: true
+  register: nova_cell1_create
+  failed_when: "nova_cell1_create.rc not in [0, 2]"
+  changed_when: "nova_cell1_create.rc == 0"
+  delegate_to: "{{ groups['controller'][0] }}"
+  run_once: true
+
+- name: Setup | populate nova database
+  ansible.builtin.shell: su -s /bin/sh -c "nova-manage db sync" nova
+  become: true
+  delegate_to: "{{ groups['controller'][0] }}"
+  run_once: true
+...
