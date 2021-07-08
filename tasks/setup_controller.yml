@@ -5,7 +5,7 @@
     src: "{{ ansible_distribution | lower }}{{ item.dest }}"
     owner: "root"
     group: "root"
-    mode: "0755"
+    mode: "{{ item.mode }}"
   loop: "{{ os_service_init }}"
   become: true
 

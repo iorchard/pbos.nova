@@ -1,4 +1,14 @@
 ---
+- name: Setup | copy init file
+  ansible.builtin.copy:
+    dest: "{{ item.dest }}"
+    src: "{{ ansible_distribution | lower }}{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode }}"
+  loop: "{{ os_service_init_compute }}"
+  become: true
+
 - name: Setup | template configuration
   ansible.builtin.template:
     dest: "{{ item.dest }}"

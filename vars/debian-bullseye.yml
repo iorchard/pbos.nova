@@ -31,8 +31,12 @@ nova_db:
   - nova_cell0
 
 os_service_init:
-  - {dest: "/etc/init.d/nova-api"}
-  - {dest: "/etc/init.d/nova-api-metadata"}
+  - {dest: "/etc/init.d/nova-api", mode: "0755"}
+  - {dest: "/etc/init.d/nova-api-metadata", mode: "0755"}
+  - {dest: "/etc/nova/policy.d/00_default_policy.yaml", mode: "0644"}
+
+os_service_init_compute:
+  - {dest: "/etc/nova/policy.d/00_default_policy.yaml", mode: "0644"}
 
 os_service_conf: 
   - {dest: "/etc/nova/nova.conf"}
