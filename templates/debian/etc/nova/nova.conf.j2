@@ -4,7 +4,6 @@ transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepaliv
 pybasedir = /usr/lib/python3/dist-packages
 state_path = /var/lib/nova
 [api]
-auth_strategy = keystone
 [api_database]
 {% if inventory_hostname in groups['controller'] %}
 connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}_api
@@ -28,13 +27,13 @@ connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepaliv
 [ephemeral_storage_encryption]
 [filter_scheduler]
 [glance]
-api_servers = http://{{ keepalived_vip }}:{{ glance_port }}
 [guestfs]
 [healthcheck]
 [hyperv]
 [image_cache]
 [ironic]
 [key_manager]
+backend = barbican
 [keystone]
 [keystone_authtoken]
 www_authenticate_uri = http://{{ keepalived_vip }}:{{ keystone_port }}
@@ -65,12 +64,9 @@ region_name = RegionOne
 project_name = service
 username = neutron
 password = {{ neutron_password }}
-{% if inventory_hostname in groups['controller'] %}
-default_floating_pool = ext-net
 service_metadata_proxy = true
 metadata_proxy_shared_secret = {{ metadata_secret }}
 service_name = neutron
-{% endif %}
 [notifications]
 [oslo_concurrency]
 lock_path = /var/lock/nova
