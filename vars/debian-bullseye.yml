@@ -24,6 +24,8 @@ controller_packages:
 
 compute_packages:
   - nova-compute-kvm
+  - cryptsetup
+  - python3-barbicanclient
 
 nova_db:
   - nova_api
