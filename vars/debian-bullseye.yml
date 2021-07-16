@@ -51,12 +51,12 @@ os_service_compute_conf:
   - {dest: "/etc/nova/nova.conf"}
 
 os_systemd_service_name:
-  - nova-api
-  - nova-api-metadata
-  - nova-scheduler
-  - nova-conductor
-  - nova-novncproxy
+  - nova-api.service
+  - nova-api-metadata.service
+  - nova-scheduler.service
+  - nova-conductor.service
+  - nova-novncproxy.service
 
 os_systemd_compute_service_name:
-  - nova-compute
+  - nova-compute.service
 ...
