@@ -24,6 +24,7 @@ controller_packages:
 
 compute_packages:
   - nova-compute-kvm
+  - ceph-common
   - cryptsetup
   - python3-barbicanclient
 
