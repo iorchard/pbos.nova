@@ -1,10 +1,14 @@
 ---
 - name: Start | import common tasks
-  tags: nova
+  tags:
+    - nova
+    - openstack
   ansible.builtin.import_tasks: "common.yml"
 
 - name: Start | start service
-  tags: nova
+  tags:
+    - nova
+    - openstack
   block:
     - name: Start | start service
       ansible.builtin.service:

@@ -1,10 +1,14 @@
 ---
 - name: Stop | import common tasks
-  tags: nova
+  tags:
+    - nova
+    - openstack
   ansible.builtin.import_tasks: "common.yml"
 
 - name: Stop | stop service
-  tags: nova
+  tags:
+    - nova
+    - openstack
   block:
     - name: Stop | stop service on controller
       ansible.builtin.service:

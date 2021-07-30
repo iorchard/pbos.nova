@@ -1,4 +1,5 @@
 ---
+apt_state: "latest"
 prereq_pkgs:
   - apt-transport-https
   - ca-certificates
@@ -25,7 +26,6 @@ controller_packages:
 
 compute_packages:
   - nova-compute-kvm
-  - ceph-common
   - cryptsetup
   - python3-barbicanclient
 
