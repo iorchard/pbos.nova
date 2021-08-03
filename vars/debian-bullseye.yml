@@ -42,15 +42,16 @@ os_service_init:
 os_service_init_compute:
   - {dest: "/etc/nova/policy.d/00_default_policy.yaml", mode: "0644"}
 
+os_conf_dir: "/etc/nova"
 os_service_conf: 
-  - {dest: "/etc/nova/nova.conf"}
-  - {dest: "/etc/nova/nova-api-uwsgi.ini"}
-  - {dest: "/etc/nova/nova-api-uwsgi-bind.ini"}
-  - {dest: "/etc/nova/nova-api-metadata-uwsgi.ini"}
-  - {dest: "/etc/nova/nova-api-metadata-uwsgi-bind.ini"}
+  - {dest: "{{ os_conf_dir }}/nova.conf"}
+  - {dest: "{{ os_conf_dir }}/nova-api-uwsgi.ini"}
+  - {dest: "{{ os_conf_dir }}/nova-api-uwsgi-bind.ini"}
+  - {dest: "{{ os_conf_dir }}/nova-api-metadata-uwsgi.ini"}
+  - {dest: "{{ os_conf_dir }}/nova-api-metadata-uwsgi-bind.ini"}
 
 os_service_compute_conf: 
-  - {dest: "/etc/nova/nova.conf"}
+  - {dest: "{{ os_conf_dir }}/nova.conf"}
 
 os_systemd_service_name:
   - nova-api.service
