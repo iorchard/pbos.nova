@@ -5,7 +5,7 @@
     - openstack
   ansible.builtin.import_tasks: "common.yml"
 
-- name: Delete | purge controller packages
+- name: Delete | remove controller packages
   tags:
     - nova
     - openstack
@@ -16,7 +16,7 @@
   become: true
   when: inventory_hostname in groups['controller']
 
-- name: Delete | purge compute packages
+- name: Delete | remove compute packages
   tags:
     - nova
     - openstack
