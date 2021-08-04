@@ -1,0 +1,49 @@
+---
+apt_state: "latest"
+prereq_pkgs:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gpg
+
+controller_packages:
+  - nova-common
+  - nova-api
+  - nova-conductor
+  - nova-novncproxy
+  - nova-scheduler
+  - uwsgi-plugin-python3
+
+compute_packages:
+  - nova-common
+  - nova-compute
+  - nova-compute-kvm
+  - cryptsetup
+  - python3-barbicanclient
+  - uwsgi-plugin-python3
+
+nova_db:
+  - nova_api
+  - nova
+  - nova_cell0
+
+os_service_init: []
+
+os_service_init_compute: []
+
+os_conf_dir: "/etc/nova"
+os_service_conf: 
+  - {dest: "{{ os_conf_dir }}/nova.conf"}
+
+os_service_compute_conf: 
+  - {dest: "{{ os_conf_dir }}/nova.conf"}
+
+os_systemd_service_name:
+  - nova-api.service
+  - nova-scheduler.service
+  - nova-conductor.service
+  - nova-novncproxy.service
+
+os_systemd_compute_service_name:
+  - nova-compute.service
+...

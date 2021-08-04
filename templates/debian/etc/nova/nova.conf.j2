@@ -1,4 +1,6 @@
 [DEFAULT]
+osapi_compute_listen = {{ ansible_host }}
+metadata_listen = {{ ansible_host }}
 my_ip = {{ ansible_host }}
 transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_port }}/
 pybasedir = /usr/lib/python3/dist-packages
