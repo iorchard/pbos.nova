@@ -18,6 +18,7 @@ compute_packages:
   - nova-common
   - nova-compute
   - nova-compute-kvm
+  - nova-compute-libvirt
   - cryptsetup
   - python3-barbicanclient
   - uwsgi-plugin-python3
@@ -33,10 +34,11 @@ os_service_init_compute: []
 
 os_conf_dir: "/etc/nova"
 os_service_conf: 
-  - {dest: "{{ os_conf_dir }}/nova.conf"}
+  - {dest: "{{ os_conf_dir }}/nova.conf", mode: "0644"}
+  - {dest: "/etc/init.d/nova-novncproxy", mode: "0755"}
 
 os_service_compute_conf: 
-  - {dest: "{{ os_conf_dir }}/nova.conf"}
+  - {dest: "{{ os_conf_dir }}/nova.conf", mode: "0644"}
 
 os_systemd_service_name:
   - nova-api.service
