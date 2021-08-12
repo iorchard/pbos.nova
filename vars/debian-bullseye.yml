@@ -19,12 +19,15 @@ osbpo_repos:
     filename: "openstack"
 
 controller_packages:
+  - nova-common
   - nova-api
   - nova-conductor
-  - nova-novncproxy
+  - nova-consoleproxy
   - nova-scheduler
 
 compute_packages:
+  - nova-common
+  - nova-compute
   - nova-compute-kvm
   - cryptsetup
   - python3-barbicanclient
@@ -49,6 +52,7 @@ os_service_conf:
   - {dest: "{{ os_conf_dir }}/nova-api-uwsgi-bind.ini"}
   - {dest: "{{ os_conf_dir }}/nova-api-metadata-uwsgi.ini"}
   - {dest: "{{ os_conf_dir }}/nova-api-metadata-uwsgi-bind.ini"}
+  - {dest: "/etc/default/nova-consoleproxy"}
 
 os_service_compute_conf: 
   - {dest: "{{ os_conf_dir }}/nova.conf"}
