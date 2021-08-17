@@ -102,15 +102,16 @@ discover_hosts_in_cells_interval = 60
 [service_user]
 [spice]
 enabled = true
-server_listen = 0.0.0.0
-server_proxyclient_address = $my_ip
+server_listen = {{ ansible_host }}
+server_proxyclient_address = {{ ansible_host }}
 [upgrade_levels]
 [vault]
 [vendordata_dynamic_auth]
 [vmware]
 [vnc]
 enabled = true
-server_listen = {{ (inventory_hostname in groups['controller']) | ternary(ansible_host, '0.0.0.0') }}
+#server_listen = {{ (inventory_hostname in groups['controller']) | ternary(ansible_host, '0.0.0.0') }}
+server_listen = {{ ansible_host }}
 server_proxyclient_address = {{ ansible_host }}
 {% if inventory_hostname in groups['compute'] %}
 novncproxy_base_url = http://{{ keepalived_vip }}:{{ nova_novncproxy_port }}/vnc_auto.html
