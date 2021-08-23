@@ -1,34 +1,28 @@
 ---
 pkg_state: "latest"
 prereq_pkgs:
-  - apt-transport-https
   - ca-certificates
   - curl
-  - gpg
 
 controller_packages:
-  - nova-common
-  - nova-api
-  - nova-conductor
-  - nova-novncproxy
-  - nova-scheduler
-  - uwsgi-plugin-python3
+  - openstack-nova-api
+  - openstack-nova-conductor
+  - openstack-nova-novncproxy
+  - openstack-nova-scheduler
 
 compute_packages:
-  - nova-common
-  - nova-compute
-  - nova-compute-kvm
-  - nova-compute-libvirt
+  - openstack-nova-compute
   - cryptsetup
   - python3-barbicanclient
-  - uwsgi-plugin-python3
 
 nova_db:
   - nova_api
   - nova
   - nova_cell0
 
-mariadb_service_socket: "/run/mysqld/mysqld.sock"
+openstack_repo_rpm: "https://www.rdoproject.org/repos/rdo-release.el8.rpm"
+
+mariadb_service_socket: "/var/lib/mysql/mysql.sock"
 
 os_service_init: []
 
@@ -37,17 +31,17 @@ os_service_init_compute: []
 os_conf_dir: "/etc/nova"
 os_service_conf: 
   - {dest: "{{ os_conf_dir }}/nova.conf", mode: "0644"}
-  - {dest: "/etc/init.d/nova-novncproxy", mode: "0755"}
 
 os_service_compute_conf: 
   - {dest: "{{ os_conf_dir }}/nova.conf", mode: "0644"}
 
 os_systemd_service_name:
-  - nova-api.service
-  - nova-scheduler.service
-  - nova-conductor.service
-  - nova-novncproxy.service
+  - openstack-nova-api.service
+  - openstack-nova-scheduler.service
+  - openstack-nova-conductor.service
+  - openstack-nova-novncproxy.service
 
 os_systemd_compute_service_name:
-  - nova-compute.service
+  - libvirtd.service
+  - openstack-nova-compute.service
 ...

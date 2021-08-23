@@ -1,5 +1,5 @@
 ---
-apt_state: "latest"
+pkg_state: "latest"
 prereq_pkgs:
   - apt-transport-https
   - ca-certificates
@@ -36,6 +36,8 @@ nova_db:
   - nova_api
   - nova
   - nova_cell0
+
+mariadb_service_socket: "/run/mysqld/mysqld.sock"
 
 os_service_init:
   - {dest: "/etc/init.d/nova-api", mode: "0755"}

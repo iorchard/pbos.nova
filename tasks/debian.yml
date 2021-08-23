@@ -1,12 +1,10 @@
 ---
 - name: Debian | Install prerequisite packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
-    state: "{{ apt_state }}"
-    update_cache: true
-    allow_unauthenticated: false
-  register: _apt
-  until: not _apt.failed
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
   retries: 3
   delay: 3
   loop: "{{ prereq_pkgs }}"
@@ -31,13 +29,11 @@
   loop: "{{ osbpo_repos }}"
 
 - name: Debian | Install controller packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
-    state: "{{ apt_state }}"
-    update_cache: true
-    allow_unauthenticated: false
-  register: _apt
-  until: not _apt.failed
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
   retries: 3
   delay: 3
   become: true
@@ -45,13 +41,11 @@
   when: inventory_hostname in groups['controller']
 
 - name: Debian | Install compute packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
-    state: "{{ apt_state }}"
-    update_cache: true
-    allow_unauthenticated: false
-  register: _apt
-  until: not _apt.failed
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
   retries: 3
   delay: 3
   become: true
