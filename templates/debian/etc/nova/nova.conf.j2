@@ -110,7 +110,6 @@ server_proxyclient_address = {{ ansible_host }}
 [vmware]
 [vnc]
 enabled = true
-#server_listen = {{ (inventory_hostname in groups['controller']) | ternary(ansible_host, '0.0.0.0') }}
 server_listen = {{ ansible_host }}
 server_proxyclient_address = {{ ansible_host }}
 {% if inventory_hostname in groups['compute'] %}
