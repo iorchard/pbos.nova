@@ -23,7 +23,7 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: absent
-  loop: "{{ compute_packages }}"
+  loop: "{{ compute_delete_packages }}"
   become: true
   when: inventory_hostname in groups['compute']
 

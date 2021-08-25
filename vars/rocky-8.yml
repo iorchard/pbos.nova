@@ -17,6 +17,13 @@ compute_packages:
   - cryptsetup
   - python3-barbicanclient
 
+# compute_delete_packages used by delete.yml
+# excluded cryptsetup since ceph-osd depends on it.
+compute_delete_packages:
+  - openstack-nova-common
+  - openstack-nova-compute
+  - python3-barbicanclient
+
 nova_db:
   - nova_api
   - nova
