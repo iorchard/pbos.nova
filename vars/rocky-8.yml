@@ -5,12 +5,14 @@ prereq_pkgs:
   - curl
 
 controller_packages:
+  - openstack-nova-common
   - openstack-nova-api
   - openstack-nova-conductor
   - openstack-nova-novncproxy
   - openstack-nova-scheduler
 
 compute_packages:
+  - openstack-nova-common
   - openstack-nova-compute
   - cryptsetup
   - python3-barbicanclient
