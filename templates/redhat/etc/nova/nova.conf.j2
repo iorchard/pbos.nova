@@ -51,6 +51,7 @@ project_name = service
 username = nova
 password = {{ os_password }}
 [libvirt]
+{% if "ceph" in storage_backends %}
 disk_cachemodes = network=writeback
 images_type = rbd
 hw_disk_discard = unmap
@@ -58,6 +59,7 @@ images_rbd_ceph_conf = /etc/ceph/ceph.conf
 images_rbd_pool = vms
 rbd_user = cinder
 rbd_secret_uuid = {{ rbd_secret }}
+{% endif %}
 [metrics]
 [mks]
 [neutron]
@@ -113,8 +115,8 @@ server_proxyclient_address = $my_ip
 [vmware]
 [vnc]
 enabled = true
-server_listen = $my_ip
-server_proxyclient_address = $my_ip
+server_listen = {{ ansible_host }}
+server_proxyclient_address = {{ ansible_host }}
 {% if inventory_hostname in groups['compute'] %}
 novncproxy_base_url = http://{{ keepalived_vip }}:{{ nova_novncproxy_port }}/vnc_auto.html
 {% endif %}

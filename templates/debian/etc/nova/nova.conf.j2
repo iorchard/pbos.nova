@@ -48,6 +48,7 @@ project_name = service
 username = nova
 password = {{ os_password }}
 [libvirt]
+{% if "ceph" in storage_backends %}
 disk_cachemodes = network=writeback
 images_type = rbd
 hw_disk_discard = unmap
@@ -55,6 +56,7 @@ images_rbd_ceph_conf = /etc/ceph/ceph.conf
 images_rbd_pool = vms
 rbd_user = cinder
 rbd_secret_uuid = {{ rbd_secret }}
+{% endif %}
 [metrics]
 [mks]
 [neutron]
