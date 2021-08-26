@@ -1,0 +1,1 @@
+OPTIONS="--vnc-novncproxy_host={{ ansible_host }}"
