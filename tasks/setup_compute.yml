@@ -29,4 +29,7 @@
 - name: Setup compute | include libvirt secret task
   ansible.builtin.include_tasks: libvirt_secret.yml
   when: '"ceph" in storage_backends'
+
+- name: Setup compute | include ssh key tasks
+  ansible.builtin.include_tasks: nova_sshkey.yml
 ...

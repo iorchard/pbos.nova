@@ -15,6 +15,10 @@
     url: "{{ osbpo_keyring.url }}"
     keyring: "{{ osbpo_keyring.file }}"
     state: present
+  register: _aptrepo
+  until: not _aptrepo.failed
+  retries: 3
+  delay: 3
   become: true
 
 - name: Debian | Add openstack apt repository
