@@ -45,7 +45,7 @@
   become: true
   when: inventory_hostname in groups['compute']
 
-- name: Setup ssh keys | create authorized keys on compute nodes
+- name: Setup ssh keys | create ssh key files on compute nodes
   ansible.builtin.copy:
     content: "{{ item.content }}"
     dest: "{{ nova_home }}/.ssh/{{ item.name }}"
@@ -53,6 +53,7 @@
     owner: "{{ os_service_name }}"
     group: "{{ os_service_name }}"
   become: true
+  no_log: true
   loop:
     - {name: "authorized_keys", content: "{{ ssh_public_key.content | b64decode }}", mode: "0600"}
     - {name: "id_rsa.pub", content: "{{ ssh_public_key.content | b64decode }}", mode: "0644"}
@@ -68,6 +69,13 @@
     block: |
       StrictHostKeyChecking no
       UserKnownHostsFile /dev/null
+  become: true
+
+- name: Setup ssh keys | set nova shell to /bin/sh
+  ansible.builtin.user:
+    name: nova
+    shell: "/bin/sh"
+    state: present
   become: true
 
 - name: Setup ssh keys | remove temporary directory for ssh keys
