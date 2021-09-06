@@ -24,6 +24,9 @@
       paths:
         - "."
 
+- name: Main | include VeNCrypt tasks
+  ansible.builtin.include_tasks: "vencrypt.yml"
+
 - name: Main | include setup tasks for controller
   ansible.builtin.include_tasks: "setup_controller.yml"
   when: inventory_hostname in groups['controller']

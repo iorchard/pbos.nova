@@ -114,6 +114,10 @@ server_proxyclient_address = $my_ip
 [vendordata_dynamic_auth]
 [vmware]
 [vnc]
+auth_schemes=vencrypt
+vencrypt_client_key={{ vencrypt_client_key }}
+vencrypt_client_cert={{ vencrypt_client_cert }}
+vencrypt_ca_certs={{ vencrypt_client_dir }}/ca-cert.pem
 enabled = true
 server_listen = {{ ansible_host }}
 server_proxyclient_address = {{ ansible_host }}
