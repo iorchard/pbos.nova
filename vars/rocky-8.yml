@@ -37,6 +37,7 @@ os_service_init: []
 
 os_service_init_compute:
   - {dest: "/etc/libvirt/qemu.conf", mode: "0644"}
+  - {dest: "/etc/sysconfig/libvirtd", mode: "0644"}
 
 os_conf_dir: "/etc/nova"
 os_service_conf: 
@@ -44,7 +45,17 @@ os_service_conf:
   - {dest: "/etc/sysconfig/openstack-nova-novncproxy", mode: "0644"}
 
 os_service_compute_conf: 
-  - {dest: "{{ os_conf_dir }}/nova.conf", mode: "0644"}
+  - {dest: "{{ os_conf_dir }}/nova.conf", owner: "root",
+     group: "{{ os_service_name }}", mode: "0644"}
+  - {dest: "/etc/libvirt/libvirtd.conf", owner: "root",
+     group: "root", mode: "0644"}
+
+libvirtd_sockets:
+  - libvirtd.socket
+  - libvirtd-ro.socket
+  - libvirtd-admin.socket
+  - libvirtd-tcp.socket
+  - libvirtd-tls.socket
 
 vencrypt_server_dir: "/etc/pki/libvirt-vnc"
 vencrypt_server_key: "{{ vencrypt_server_dir }}/server-key.pem"
