@@ -229,4 +229,11 @@
     mode: "0640"
   become: true
   when: inventory_hostname in groups['controller']
+
+- name: VeNCrypt | remove temporary certificate directory
+  ansible.builtin.file:
+    path: "{{ vencrypt_tmp_dir }}"
+    state: absent
+  delegate_to: "{{ groups['controller'][0] }}"
+  run_once: true
 ...
