@@ -112,9 +112,9 @@
   ansible.builtin.stat:
     path: "{{ vencrypt_server_cert }}"
   register: server_cert_exists
-  when: inventory_hostname in groups['compute']
+  #when: inventory_hostname in groups['compute']
 
-- name: VeNCrypt | read certificate if exists
+- name: VeNCrypt | read server certificate if exists
   ansible.builtin.slurp:
     src: "{{ vencrypt_server_cert }}"
   register: server_certificate
@@ -122,7 +122,7 @@
     - inventory_hostname in groups['compute']
     - server_cert_exists.stat.exists
 
-- name: VeNCrypt | sign certificate with CA
+- name: VeNCrypt | sign server certificate with CA
   community.crypto.x509_certificate_pipe:
     content: "{{ (server_certificate.content | b64decode) if server_cert_exists.stat.exists else omit }}"
     csr_content: "{{ server_csr.csr }}"
@@ -130,7 +130,7 @@
     ownca_path: "{{ vencrypt_tmp_ca.crt }}"
     ownca_privatekey_path: "{{ vencrypt_tmp_ca.key }}"
     ownca_privatekey_passphrase: "{{ vencrypt_passphrase }}"
-    ownca_not_after: "+36500d"
+    ownca_not_after: "{{ vencrypt_days }}"
     ownca_not_before: "+0s"
   register: server_cert
   delegate_to: "{{ groups['controller'][0] }}"
@@ -184,9 +184,9 @@
   ansible.builtin.stat:
     path: "{{ vencrypt_client_cert }}"
   register: client_cert_exists
-  when: inventory_hostname in groups['compute']
+  #when: inventory_hostname in groups['compute']
 
-- name: VeNCrypt | read certificate if exists
+- name: VeNCrypt | read client certificate if exists
   ansible.builtin.slurp:
     src: "{{ vencrypt_client_cert }}"
   register: client_certificate
@@ -194,7 +194,7 @@
     - inventory_hostname in groups['compute']
     - client_cert_exists.stat.exists
 
-- name: VeNCrypt | sign certificate with CA
+- name: VeNCrypt | sign client certificate with CA
   community.crypto.x509_certificate_pipe:
     content: "{{ (client_certificate.content | b64decode) if client_cert_exists.stat.exists else omit }}"
     csr_content: "{{ client_csr.csr }}"
@@ -202,7 +202,7 @@
     ownca_path: "{{ vencrypt_tmp_ca.crt }}"
     ownca_privatekey_path: "{{ vencrypt_tmp_ca.key }}"
     ownca_privatekey_passphrase: "{{ vencrypt_passphrase }}"
-    ownca_not_after: "+36500d"
+    ownca_not_after: "{{ vencrypt_days }}"
     ownca_not_before: "+0s"
   register: client_cert
   delegate_to: "{{ groups['controller'][0] }}"

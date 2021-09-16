@@ -57,14 +57,6 @@ libvirtd_sockets:
   - libvirtd-tcp.socket
   - libvirtd-tls.socket
 
-vencrypt_server_dir: "/etc/pki/libvirt-vnc"
-vencrypt_server_key: "{{ vencrypt_server_dir }}/server-key.pem"
-vencrypt_server_cert: "{{ vencrypt_server_dir }}/server-cert.pem"
-
-vencrypt_client_dir: "/etc/pki/nova-novncproxy"
-vencrypt_client_key: "{{ vencrypt_client_dir }}/client-key.pem"
-vencrypt_client_cert: "{{ vencrypt_client_dir }}/client-cert.pem"
-
 os_systemd_service_name:
   - openstack-nova-api.service
   - openstack-nova-scheduler.service

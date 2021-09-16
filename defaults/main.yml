@@ -45,4 +45,12 @@ vencrypt_tmp_server: {
 vencrypt_tmp_client: {
   key: "{{ vencrypt_tmp_dir }}/client-key.pem", 
 }
+vencrypt_days: "+3650d"
+vencrypt_server_dir: "/etc/pki/libvirt-vnc"
+vencrypt_server_key: "{{ vencrypt_server_dir }}/server-key.pem"
+vencrypt_server_cert: "{{ vencrypt_server_dir }}/server-cert.pem"
+
+vencrypt_client_dir: "/etc/pki/nova-novncproxy"
+vencrypt_client_key: "{{ vencrypt_client_dir }}/client-key.pem"
+vencrypt_client_cert: "{{ vencrypt_client_dir }}/client-cert.pem"
 ...
