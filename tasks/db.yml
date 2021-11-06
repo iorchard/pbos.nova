@@ -21,6 +21,8 @@
     password: "{{ db_password }}"
     priv: "{{ item[1] }}.*:ALL,GRANT"
     append_privs: true
+    tls_requires:
+      ssl:
   loop: "{{ openstack_mariadb_acl_cidr | product(nova_db) | list }}"
   no_log: true
 ...

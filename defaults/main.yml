@@ -15,6 +15,7 @@ nova_novncproxy_port: 6080
 keystone_port: 5000
 glance_port: 9292
 rabbitmq_port: 5672
+rabbitmq_tls_port: 5671
 memcached_port: 11211
 os_endpoint_interface:
   - public
@@ -53,4 +54,7 @@ vencrypt_server_cert: "{{ vencrypt_server_dir }}/server-cert.pem"
 vencrypt_client_dir: "/etc/pki/nova-novncproxy"
 vencrypt_client_key: "{{ vencrypt_client_dir }}/client-key.pem"
 vencrypt_client_cert: "{{ vencrypt_client_dir }}/client-cert.pem"
+
+mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
+rabbitmq_ca_cert: "/etc/rabbitmq/certificates/ca-cert.pem"
 ...

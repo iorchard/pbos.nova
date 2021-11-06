@@ -191,7 +191,7 @@
     src: "{{ vencrypt_client_cert }}"
   register: client_certificate
   when:
-    - inventory_hostname in groups['compute']
+    - inventory_hostname in groups['controller']
     - client_cert_exists.stat.exists
 
 - name: VeNCrypt | sign client certificate with CA
