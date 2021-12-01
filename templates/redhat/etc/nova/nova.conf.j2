@@ -75,11 +75,15 @@ service_metadata_proxy = true
 metadata_proxy_shared_secret = {{ metadata_secret }}
 service_name = neutron
 [notifications]
+notification_format = versioned
+bdms_in_notifications = true
+notify_on_state_change = vm_and_task_state
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
 [oslo_messaging_amqp]
 [oslo_messaging_kafka]
 [oslo_messaging_notifications]
+driver = messagingv2
 [oslo_messaging_rabbit]
 ssl=true
 ssl_version=TLSv1_2
