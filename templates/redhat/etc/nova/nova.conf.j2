@@ -6,8 +6,6 @@ my_ip = {{ ansible_host }}
 transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_tls_port }}/
 state_path = /var/lib/nova
 [api]
-auth_strategy = keystone
-
 [api_database]
 {% if inventory_hostname in groups['controller'] %}
 connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}_api?charset=utf8&ssl_ca={{ mariadb_ca_cert }}
@@ -31,7 +29,6 @@ connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepaliv
 [ephemeral_storage_encryption]
 [filter_scheduler]
 [glance]
-api_servers = http://{{ keepalived_vip }}:{{ glance_port }}
 [guestfs]
 [healthcheck]
 [hyperv]
