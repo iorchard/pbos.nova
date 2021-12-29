@@ -26,7 +26,7 @@ nova_api_metadata_processes: 4
 nova_home: "/var/lib/nova"
 # VeNCrypt variables
 vencrypt_tmp_dir: "/tmp/vencrypt"
-vencrypt_passphrase: ~
+ca_passphrase: ~
 vencrypt_subj: {
   country_name: "KR",
   state_or_province_name: "Gangwon-Do",
@@ -35,10 +35,10 @@ vencrypt_subj: {
   common_name: "PBOS",
   email_address: "support@iorchard.co.kr"
 }
-vencrypt_tmp_ca: {
-  key: "{{ vencrypt_tmp_dir }}/ca-key.pem", 
-  crt: "{{ vencrypt_tmp_dir }}/ca-cert.pem"
-
+tls_ca_dir: "/etc/pki/pbos"
+tls_ca: {
+  key: "{{ tls_ca_dir }}/ca-key.pem",
+  crt: "{{ tls_ca_dir }}/ca-cert.pem"
 }
 vencrypt_tmp_server: {
   key: "{{ vencrypt_tmp_dir }}/server-key.pem", 

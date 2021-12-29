@@ -1,4 +1,12 @@
 ---
+- name: TLS | check if CA certificate exists
+  ansible.builtin.stat:
+    path: "{{ tls_ca.crt }}"
+  register: p
+  delegate_to: "{{ groups['mariadb'][0] }}"
+  run_once: true
+  failed_when: p.stat.isreg is defined and p.stat.isreg == False
+
 - name: VeNCrypt | create temporary certificate directory
   ansible.builtin.file:
     path: "{{ vencrypt_tmp_dir }}"
@@ -23,53 +31,10 @@
   become: true
   when: inventory_hostname in groups['controller']
 
-- name: VeNCrypt | create CA private key with password protection
-  community.crypto.openssl_privatekey:
-    path: "{{ vencrypt_tmp_ca.key }}"
-    passphrase: "{{ vencrypt_passphrase }}"
-    select_crypto_backend: cryptography
-    type: RSA
-    size: 4096
-    cipher: auto
-  delegate_to: "{{ groups['controller'][0] }}"
-  run_once: true
-
-- name: VeNCrypt | create CSR for CA certificate
-  community.crypto.openssl_csr_pipe:
-    privatekey_path: "{{ vencrypt_tmp_ca.key }}"
-    privatekey_passphrase: "{{ vencrypt_passphrase }}"
-    country_name: "{{ vencrypt_subj.country_name }}"
-    state_or_province_name: "{{ vencrypt_subj.state_or_province_name }}"
-    organization_name: "{{ vencrypt_subj.organization_name }}"
-    common_name: "{{ vencrypt_subj.common_name }}"
-    email_address: "{{ vencrypt_subj.email_address }}"
-    use_common_name_for_san: false
-    basic_constraints:
-      - 'CA:TRUE'
-    basic_constraints_critical: true
-    key_usage:
-      - keyCertSign
-    key_usage_critical: true
-  register: ca_csr
-  delegate_to: "{{ groups['controller'][0] }}"
-  run_once: true
-
-- name: VeNCrypt | create CA certificate
-  community.crypto.x509_certificate:
-    path: "{{ vencrypt_tmp_ca.crt }}"
-    csr_content: "{{ ca_csr.csr }}"
-    ownca_not_after: "+36500d"
-    ownca_not_before: "+0s"
-    privatekey_path: "{{ vencrypt_tmp_ca.key }}"
-    privatekey_passphrase: "{{ vencrypt_passphrase }}"
-    provider: selfsigned
-  delegate_to: "{{ groups['controller'][0] }}"
-  run_once: true
-
 - name: VeNCrypt | copy ca certificate file to compute node
   ansible.builtin.copy:
     dest: "{{ vencrypt_server_dir }}/ca-cert.pem"
-    src: "{{ vencrypt_tmp_ca.crt }}"
+    src: "{{ tls_ca.crt }}"
     owner: "root"
     group: "root"
     mode: "0644"
@@ -79,7 +44,7 @@
 - name: VeNCrypt | copy ca certificate file to controller node
   ansible.builtin.copy:
     dest: "{{ vencrypt_client_dir }}/ca-cert.pem"
-    src: "{{ vencrypt_tmp_ca.crt }}"
+    src: "{{ tls_ca.crt }}"
     owner: "root"
     group: "root"
     mode: "0644"
@@ -127,11 +92,12 @@
     content: "{{ (server_certificate.content | b64decode) if server_cert_exists.stat.exists else omit }}"
     csr_content: "{{ server_csr.csr }}"
     provider: ownca
-    ownca_path: "{{ vencrypt_tmp_ca.crt }}"
-    ownca_privatekey_path: "{{ vencrypt_tmp_ca.key }}"
-    ownca_privatekey_passphrase: "{{ vencrypt_passphrase }}"
+    ownca_path: "{{ tls_ca.crt }}"
+    ownca_privatekey_path: "{{ tls_ca.key }}"
+    ownca_privatekey_passphrase: "{{ ca_passphrase }}"
     ownca_not_after: "{{ vencrypt_days }}"
     ownca_not_before: "+0s"
+  become: true
   register: server_cert
   delegate_to: "{{ groups['controller'][0] }}"
   run_once: true
@@ -199,11 +165,12 @@
     content: "{{ (client_certificate.content | b64decode) if client_cert_exists.stat.exists else omit }}"
     csr_content: "{{ client_csr.csr }}"
     provider: ownca
-    ownca_path: "{{ vencrypt_tmp_ca.crt }}"
-    ownca_privatekey_path: "{{ vencrypt_tmp_ca.key }}"
-    ownca_privatekey_passphrase: "{{ vencrypt_passphrase }}"
+    ownca_path: "{{ tls_ca.crt }}"
+    ownca_privatekey_path: "{{ tls_ca.key }}"
+    ownca_privatekey_passphrase: "{{ ca_passphrase }}"
     ownca_not_after: "{{ vencrypt_days }}"
     ownca_not_before: "+0s"
+  become: true
   register: client_cert
   delegate_to: "{{ groups['controller'][0] }}"
   run_once: true
@@ -230,10 +197,10 @@
   become: true
   when: inventory_hostname in groups['controller']
 
-- name: VeNCrypt | remove temporary certificate directory
-  ansible.builtin.file:
-    path: "{{ vencrypt_tmp_dir }}"
-    state: absent
-  delegate_to: "{{ groups['controller'][0] }}"
-  run_once: true
+#- name: VeNCrypt | remove temporary certificate directory
+#  ansible.builtin.file:
+#    path: "{{ vencrypt_tmp_dir }}"
+#    state: absent
+#  delegate_to: "{{ groups['controller'][0] }}"
+#  run_once: true
 ...
