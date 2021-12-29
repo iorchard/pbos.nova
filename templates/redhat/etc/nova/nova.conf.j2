@@ -136,7 +136,7 @@ enabled = true
 server_listen = {{ ansible_host }}
 server_proxyclient_address = {{ ansible_host }}
 {% if inventory_hostname in groups['compute'] %}
-novncproxy_base_url = http://{{ keepalived_vip }}:{{ nova_novncproxy_port }}/vnc_auto.html
+novncproxy_base_url = http://{% if keepalived_vip_svc != "" %}{{ keepalived_vip_svc }}{% else %}{{ keepalived_vip }}{% endif %}:{{ nova_novncproxy_port }}/vnc_auto.html
 {% endif %}
 [workarounds]
 [wsgi]
