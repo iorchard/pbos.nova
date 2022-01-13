@@ -41,4 +41,7 @@
     state: present
     name: "{{ aggregate_name }}"
     availability_zone: "{{ aggregate_name }}"
+  delegate_to: "{{ groups['keystone'][0] }}"
+  run_once: true
+  when: inventory_hostname in groups['controller']
 ...

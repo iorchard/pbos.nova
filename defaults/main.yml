@@ -1,6 +1,7 @@
 ---
 openstack_release: "wallaby"
-keepalived_vip: ~
+keepalived_vip: ""
+keepalived_vip_svc: ""
 os_service_name: "nova"
 db_password: "{{ nova_password }}"
 os_password: "{{ nova_password }}"
