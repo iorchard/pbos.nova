@@ -34,4 +34,11 @@
 - name: Main | include setup tasks for compute
   ansible.builtin.include_tasks: "setup_compute.yml"
   when: inventory_hostname in groups['compute']
+
+- name: Main | create host aggregate
+  openstack.cloud.host_aggregate:
+    cloud: pbos
+    state: present
+    name: "{{ aggregate_name }}"
+    availability_zone: "{{ aggregate_name }}"
 ...
