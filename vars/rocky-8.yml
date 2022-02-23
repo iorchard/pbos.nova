@@ -34,7 +34,7 @@ nova_db:
   - nova_cell0
 
 #openstack_repo_rpm: "https://www.rdoproject.org/repos/rdo-release.el8.rpm"
-openstack_repo_rpm: "https://repos.fedorapeople.org/repos/openstack/openstack-{{ openstack_release }}/rdo-release-{{ openstack_release }}-1.el8.noarch.rpm"
+openstack_repo_rpm: "https://repos.fedorapeople.org/repos/openstack/openstack-{{ openstack_release }}/rdo-release-{{ openstack_release }}-2.el8.noarch.rpm"
 
 mariadb_service_socket: "/var/lib/mysql/mysql.sock"
 
@@ -72,7 +72,6 @@ os_systemd_compute_service_name:
   - libvirtd.service
   - openstack-nova-compute.service
 
-qemu_bin:
-  - {dest: "/usr/local/bin/qemu-system-x86_64", 
-     src: "/usr/libexec/qemu-kvm"}
+qemu_bin: {src: "/usr/local/bin/qemu-system-x86_64", 
+           dest: "/usr/libexec/qemu-kvm"}
 ...

@@ -35,26 +35,35 @@
 # I need to do some extra work after installing it.
 - name: Rocky Linux | check if qemu-kvm exists
   ansible.builtin.stat:
-    path: "{{ qemu_bin.src }}"
+    path: "{{ qemu_bin.dest }}"
   register: check_qemu_kvm
   when: install_custom_pkgs
 
 - name: Rocky Linux | check if qemu-system-x86_64 exists
   ansible.builtin.stat:
-    path: "{{ qemu_bin.dest }}"
+    path: "{{ qemu_bin.src }}"
   register: check_qemu_system_x86_64
   when: install_custom_pkgs
 
-- name: Rocky Linux | back up file with new name
+- name: Rocky Linux | back up qemu-kvm with new name
   ansible.builtin.copy:
-    src: "{{ qemu_bin.src }}"
-    dest: "{{ qemu_bin.src }}.{{ ansible_date_time.iso8601 }}"
+    src: "{{ qemu_bin.dest }}"
+    dest: "{{ qemu_bin.dest }}.{{ ansible_date_time.iso8601 }}"
     remote_src: true
     mode: "0755"
   become: true
   when:
     - install_custom_pkgs
     - check_qemu_kvm.stat.exists
+    - check_qemu_system_x86_64.stat.exists
+
+- name: Rocky Linux | delete qemu-kvm
+  ansible.builtin.file:
+    path: "{{ qemu_bin.dest }}"
+    state: absent
+  become: true
+  when:
+    - install_custom_pkgs
     - check_qemu_system_x86_64.stat.exists
 
 - name: Rocky Linux | symlink qemu-kvm to qemu-system-x86_64
@@ -67,7 +76,6 @@
   become: true
   when:
     - install_custom_pkgs
-    - check_qemu_kvm.stat.exists
     - check_qemu_system_x86_64.stat.exists
 # End of temporary custom package install fix.
 
