@@ -17,6 +17,10 @@ compute_packages:
   - cryptsetup
   - python3-barbicanclient
 
+custom_packages:
+  - qemu-cloudpc
+  - cloudpc-libvirt-hooks
+
 # compute_delete_packages used by delete.yml
 # excluded cryptsetup since ceph-osd depends on it.
 compute_delete_packages:
@@ -67,4 +71,8 @@ os_systemd_service_name:
 os_systemd_compute_service_name:
   - libvirtd.service
   - openstack-nova-compute.service
+
+qemu_bin:
+  - {dest: "/usr/local/bin/qemu-system-x86_64", 
+     src: "/usr/libexec/qemu-kvm"}
 ...

@@ -1,4 +1,5 @@
 ---
+install_custom_pkgs: false
 offline: false
 openstack_release: "wallaby"
 keepalived_vip: ""
