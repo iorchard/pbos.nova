@@ -1,5 +1,4 @@
 ---
-install_custom_pkgs: false
 offline: false
 openstack_release: "wallaby"
 keepalived_vip: ""
@@ -61,5 +60,6 @@ vencrypt_client_cert: "{{ vencrypt_client_dir }}/client-cert.pem"
 mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
 rabbitmq_ca_cert: "/etc/rabbitmq/certificates/ca-cert.pem"
 
+# SK Broadband specific variables
 aggregate_name: "public-zone"
 ...
