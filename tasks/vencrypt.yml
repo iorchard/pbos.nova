@@ -1,5 +1,5 @@
 ---
-- name: TLS | check if CA certificate exists
+- name: VeNCrypt | check if CA certificate exists
   ansible.builtin.stat:
     path: "{{ tls_ca.crt }}"
   register: p
