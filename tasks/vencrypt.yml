@@ -3,7 +3,7 @@
   ansible.builtin.stat:
     path: "{{ tls_ca.crt }}"
   register: p
-  delegate_to: "{{ groups['mariadb'][0] }}"
+  delegate_to: "{{ groups['controller'][0] }}"
   run_once: true
   failed_when: p.stat.isreg is defined and p.stat.isreg == False
 
@@ -197,10 +197,10 @@
   become: true
   when: inventory_hostname in groups['controller']
 
-#- name: VeNCrypt | remove temporary certificate directory
-#  ansible.builtin.file:
-#    path: "{{ vencrypt_tmp_dir }}"
-#    state: absent
-#  delegate_to: "{{ groups['controller'][0] }}"
-#  run_once: true
+- name: VeNCrypt | remove temporary certificate directory
+  ansible.builtin.file:
+    path: "{{ vencrypt_tmp_dir }}"
+    state: absent
+  delegate_to: "{{ groups['controller'][0] }}"
+  run_once: true
 ...
