@@ -1,4 +1,5 @@
 [DEFAULT]
+compute_driver = libvirt.LibvirtDriver
 enabled_apis = osapi_compute,metadata
 osapi_compute_listen = {{ ansible_host }}
 metadata_listen = {{ ansible_host }}
