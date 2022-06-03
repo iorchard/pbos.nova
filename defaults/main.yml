@@ -20,9 +20,9 @@ rabbitmq_port: 5672
 rabbitmq_tls_port: 5671
 memcached_port: 11211
 os_endpoint_interface:
-  - { name: 'public', url: "http://{{ keepalived_vip_svc | ternary(keepalived_vip_svc, keepalived_vip) }}:{{ nova_port }}" }
-  - { name: 'internal', url: "http://{{ keepalived_vip }}:{{ nova_port }}" }
-  - { name: 'admin', url: "http://{{ keepalived_vip }}:{{ nova_port }}" }
+  - { name: 'public', url: "http://{{ keepalived_vip_svc | ternary(keepalived_vip_svc, keepalived_vip) }}:{{ nova_port }}/v2.1" }
+  - { name: 'internal', url: "http://{{ keepalived_vip }}:{{ nova_port }}/v2.1" }
+  - { name: 'admin', url: "http://{{ keepalived_vip }}:{{ nova_port }}/v2.1" }
 nova_api_processes: 4
 nova_api_metadata_processes: 4
 nova_home: "/var/lib/nova"
