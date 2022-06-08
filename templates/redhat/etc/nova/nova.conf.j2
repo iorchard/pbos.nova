@@ -6,6 +6,7 @@ metadata_listen = {{ ansible_host }}
 my_ip = {{ ansible_host }}
 transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_tls_port }}/
 state_path = /var/lib/nova
+log_dir = /var/log/nova
 [api]
 [api_database]
 {% if inventory_hostname in groups['controller'] %}
