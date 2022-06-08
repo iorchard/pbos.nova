@@ -39,7 +39,7 @@ os_service_init_compute:
 
 os_conf_dir: "/etc/nova"
 os_service_conf: 
-  - {dest: "{{ os_conf_dir }}/nova.conf", mode: "0644"}
+  - {dest: "{{ os_conf_dir }}/nova.conf", mode: "0640"}
   - {dest: "/etc/sysconfig/openstack-nova-novncproxy", mode: "0644"}
 
 os_service_compute_conf: 
