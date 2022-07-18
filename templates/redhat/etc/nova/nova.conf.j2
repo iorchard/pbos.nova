@@ -30,6 +30,7 @@ connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepaliv
 [devices]
 [ephemeral_storage_encryption]
 [filter_scheduler]
+enabled_filter = ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter
 [glance]
 [guestfs]
 [healthcheck]
