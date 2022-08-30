@@ -88,6 +88,7 @@ driver = messagingv2
 ssl=true
 ssl_version=TLSv1_2
 ssl_ca_file={{ rabbitmq_ca_cert }}
+heatbeat_in_pthread=False
 [oslo_middleware]
 [oslo_policy]
 policy_dirs = /etc/nova/policy.d
