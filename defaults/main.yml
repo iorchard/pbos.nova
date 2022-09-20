@@ -11,6 +11,7 @@ placement_password: ~
 neutron_password: ~
 metadata_secret: ~
 rbd_secret: ~
+nova_workers: 4
 nova_port: 8774
 nova_metadata_port: 8775
 nova_novncproxy_port: 6080
